@@ -4,6 +4,9 @@ from random import shuffle
 #to involve 2 players
 from player import *
 
+#for deepcopying objects
+import copy
+
 class Deck:
 	def __init__(self):
 		self.suits = ['d','h','c','s']
@@ -12,6 +15,7 @@ class Deck:
 		self.draw = []
 		self.discard = []
 		self.seq = []
+		self.binstr = []
 		
 		#Generates deck
 		for i in range(len(self.suits)):
@@ -19,10 +23,13 @@ class Deck:
 			for j in range(len(self.faces)):
 				num = self.faces[j]
 		        	self.deck.append((suit,num))
+
+		#deepcopies deck for use in generating valid sequences
+		self.deckcopy = copy.deepcopy(self.deck)
 		
 		#calculates all valid sequences based on deck
 		#For same number:
-		x = len(self.deck)
+		x = len(self.deckcopy)
 		y = []
 		for j in range(len(self.faces)):
 			y.append(j)
@@ -56,17 +63,8 @@ class Deck:
 			a[int(((3*x)/4)+i)] = 1
 			self.seq.append(a)
 
-
-
-
-
-
-
-
-
-
 		#For same suit:
-		lister = [0, int((len(self.deck)/4)), int((len(self.deck)/2)), int((3*len(self.deck)/4)), int(len(self.deck))]
+		lister = [0, int((len(self.deckcopy)/4)), int((len(self.deckcopy)/2)), int((3*len(self.deckcopy)/4)), int(len(self.deckcopy))]
 		list1 = []
 		list2 = []
 		list3 = []
@@ -84,68 +82,48 @@ class Deck:
 		list3 = list(reversed(list3))
 		list4 = list(reversed(list4))
 		for i in list1:
-			for self.deck[i] in self.deck:
+			for self.deckcopy[i] in self.deckcopy:
 				if i-1 >= min(list1) and i-2 >= min(list1):
-					temp = [0]*len(self.deck)
+					temp = [0]*len(self.deckcopy)
 					temp[i] = 1
 					temp[i-1] = 1
 					temp[i-2] = 1
 					if temp not in self.seq:
 						self.seq.append(temp)
 		for i in list2:
-			for self.deck[i] in self.deck:
+			for self.deckcopy[i] in self.deckcopy:
 				if i-1 >= min(list2) and i-2 >= min(list2):
-					temp = [0]*len(self.deck)
+					temp = [0]*len(self.deckcopy)
 					temp[i] = 1
 					temp[i-1] = 1
 					temp[i-2] = 1
 					if temp not in self.seq:
 						self.seq.append(temp)
 		for i in list3:
-			for self.deck[i] in self.deck:
+			for self.deckcopy[i] in self.deckcopy:
 				if i-1 >= min(list3) and i-2 >= min(list3):
-					temp = [0]*len(self.deck)
+					temp = [0]*len(self.deckcopy)
 					temp[i] = 1
 					temp[i-1] = 1
 					temp[i-2] = 1
 					if temp not in self.seq:
 						self.seq.append(temp)
 		for i in list4:
-			for self.deck[i] in self.deck:
+			for self.deckcopy[i] in self.deckcopy:
 				if i-1 >= min(list4) and i-2 >= min(list4):
-					temp = [0]*len(self.deck)
+					temp = [0]*len(self.deckcopy)
 					temp[i] = 1
 					temp[i-1] = 1
 					temp[i-2] = 1
 					if temp not in self.seq:
 						self.seq.append(temp)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
+		#converts the seq into a list of strings - used in calculating the levenshtein distance
+		for i in range(len(self.seq)):
+			temp = []
+			temp = self.seq[i]
+			temp_str = ''.join(map(str, temp))
+			self.binstr.append(temp_str)
 		
 		
 		#initialise two players with empty hand and knowledge initialised to 0 for all cards
@@ -169,7 +147,12 @@ class Deck:
 			else:
 				self.discard.append(i)
 
-		print self.deck
-		print self.seq
-		print len(self.seq)
-
+		print player1.kb
+		print player1.hand
+		player1.converter(player1.hand)
+		player1.levendist(self.binstr)
+		player1.priority(self.seq)
+		print player1.priority1
+		print player1.binhand
+		print player1.drop1
+		print player1.pickup1
