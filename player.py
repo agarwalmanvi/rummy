@@ -10,6 +10,7 @@ class Player:
 	def __init__(self, deck):
 		self.hand = []
 		self.kb = dict()
+		self.reversekb = dict()
 		self.binhand = [0]*len(deck)
 		self.hand_str = str(0)
 		self.levenlist = []
@@ -21,16 +22,16 @@ class Player:
 		self.closest1 = []
 		self.closest2 = []
 		self.closest3 = []
-		self.restclosest = []
+		self.closest4 = []
 
 		self.pickup1 = []
 		self.pickup2 = []
 		self.pickup3 = []
+		self.pickup4 = []
 		self.drop1 = []
 		self.drop2 = []
 		self.drop3 = []
-		self.restpickup = []
-		self.restdrop = []
+		self.drop4 = []
 		
 		self.levenlistcopy = []
 		
@@ -38,6 +39,7 @@ class Player:
 		#The knowledge base keeps track of the list index which represents each card
 		indexes = list(range(len(deck)))
 		self.kb = dict(zip(deck,indexes))
+		self.reversekb = {v: k for k, v in self.kb.items()}
 
 	#takes the hand of the player and outputs a list with updated binary values for cards in hand; also converts it into binary string form
 	def converter(self, hand):
@@ -77,21 +79,46 @@ class Player:
 			if i not in self.priority1 and i not in self.priority2 and i not in self.priority3:
 				self.priority4.append(i)
 		for i in self.priority4:
-			self.restclosest.append(seq[i])
+			self.closest4.append(seq[i])
 
 		#We have the lists of the indexes, now converting them into pick and drop card lists
-		temp1pick = []
-		temp1drop = []
 		for i in self.closest1:
-			for x in range(len(self.closest1)):
-				if i[x] != self.binhand[x]:
-					if i[x] == 0 and self.binhand[x] == 1:
-						temp1drop.append(x)
-					elif i[x] == 1 and self.binhand[x] == 0:
-						temp1pick.append(x)
-		self.pickup1 = temp1pick
-		self.drop1 = temp1drop
+			for j in range(len(self.binhand)):
+				if self.binhand[j] != i[j]:
+					if self.binhand[j] == 1 and i[j] == 0:
+						card = self.reversekb.get(j)
+						self.drop1.append(card)
+					elif self.binhand[j] == 0 and i[j] ==1:
+						card = self.reversekb.get(j)
+						self.pickup1.append(card)
 
-		
+		for i in self.closest2:
+			for j in range(len(self.binhand)):
+				if self.binhand[j] != i[j]:
+					if self.binhand[j] == 1 and i[j] == 0:
+						card = self.reversekb.get(j)
+						self.drop2.append(card)
+					elif self.binhand[j] == 0 and i[j] ==1:
+						card = self.reversekb.get(j)
+						self.pickup2.append(card)
+
+		for i in self.closest3:
+			for j in range(len(self.binhand)):
+				if self.binhand[j] != i[j]:
+					if self.binhand[j] == 1 and i[j] == 0:
+						card = self.reversekb.get(j)
+						self.drop3.append(card)
+					elif self.binhand[j] == 0 and i[j] ==1:
+						card = self.reversekb.get(j)
+						self.pickup3.append(card)
+		for i in self.closest4:
+			for j in range(len(self.binhand)):
+				if self.binhand[j] != i[j]:
+					if self.binhand[j] == 1 and i[j] == 0:
+						card = self.reversekb.get(j)
+						self.drop4.append(card)
+					elif self.binhand[j] == 0 and i[j] ==1:
+						card = self.reversekb.get(j)
+						self.pickup4.append(card)
 	
 			
