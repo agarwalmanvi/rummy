@@ -147,12 +147,19 @@ class Deck:
 			else:
 				self.discard.append(i)
 
-		print player1.kb
+		print self.seq
 		print player1.hand
 		player1.converter(player1.hand)
 		player1.levendist(self.binstr)
 		player1.priority(self.seq)
+		print player1.levenlist
 		print player1.priority1
-		print player1.binhand
-		print player1.drop1
 		print player1.pickup1
+		print player1.drop1
+		print player1.priority2	
+		print player1.pickup2
+		print player1.drop2
+		print player1.priority3
+		print player1.pickup3
+		print player1.drop3
+		print player1.binhand
