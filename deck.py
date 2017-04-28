@@ -26,7 +26,7 @@ class Deck:
 
 		#deepcopies deck for use in generating valid sequences
 		self.deckcopy = copy.deepcopy(self.deck)
-		
+
 		#calculates all valid sequences based on deck
 		#For same number:
 		x = len(self.deckcopy)
@@ -124,11 +124,10 @@ class Deck:
 			temp = self.seq[i]
 			temp_str = ''.join(map(str, temp))
 			self.binstr.append(temp_str)
-		
-		
+
 		#initialise two players with empty hand and knowledge initialised to 0 for all cards
+		player0 = Player(self.deck)
 		player1 = Player(self.deck)
-		player2 = Player(self.deck)
 
 		#shuffles deck
 		shuffle(self.deck)
@@ -139,27 +138,36 @@ class Deck:
 			total = len(self.suits) * len(self.faces)
 			if j < (total/2):
 				if j%2==0:
-					player1.hand.append(i)
+					player0.hand.append(i)
 				else:
-					player2.hand.append(i)
+					player1.hand.append(i)
 			elif j > (total/2 - 1) and j < (total - 1):
 				self.draw.append(i)
 			else:
 				self.discard.append(i)
-
-		print self.seq
+		
+		print '------------------------------------------------------------------------------------------'		
+		print player0.hand
 		print player1.hand
-		player1.converter(player1.hand)
-		player1.levendist(self.binstr)
-		player1.priority(self.seq)
-		print player1.levenlist
-		print player1.priority1
-		print player1.pickup1
-		print player1.drop1
-		print player1.priority2	
-		print player1.pickup2
-		print player1.drop2
-		print player1.priority3
-		print player1.pickup3
-		print player1.drop3
-		print player1.binhand
+		print self.discard
+		print self.draw
+		print '------------------------------------------------------------------------------------------'		
+
+	#Game play
+		player_index = 0
+
+		while True:
+			hasPlayerWon = False
+
+			if player_index == 0:
+				print 'Player 0 will move now...'
+				hasPlayerWon = player0.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)		
+			else:
+				print 'Player 1 will move now...'
+				hasPlayerWon = player1.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)					
+			if hasPlayerWon == True:
+				print 'The game has ended.' 
+				break
+			player_index = 1 - player_index
+			
+
