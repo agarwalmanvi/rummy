@@ -152,11 +152,6 @@ class Player:
 			self.hand.append(z)
 			draw.remove(draw[-1])
 
-		print 'After picking up one card:'
-		print self.hand
-		print draw
-		print discard
-
 	def drop(self, seq, discard):
 		self.priority1 = []
 		self.priority2 = []
@@ -234,7 +229,3 @@ class Player:
 		z = random.sample(self.drop1, 1)
 		self.hand.remove(z[0])
 		discard.append(z[0])
-
-		print 'After dropping one card:'
-		print self.hand
-		print discard
