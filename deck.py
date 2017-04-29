@@ -16,6 +16,7 @@ class Deck:
 		self.discard = []
 		self.seq = []
 		self.binstr = []
+		self.winplay = 0
 		
 		#Generates deck
 		for i in range(len(self.suits)):
@@ -145,29 +146,26 @@ class Deck:
 				self.draw.append(i)
 			else:
 				self.discard.append(i)
-		
-		print '------------------------------------------------------------------------------------------'		
-		print player0.hand
-		print player1.hand
-		print self.discard
-		print self.draw
-		print '------------------------------------------------------------------------------------------'		
+				
 
-	#Game play
+		#Game play
 		player_index = 0
-
 		while True:
-			hasPlayerWon = False
-
-			if player_index == 0:
-				print 'Player 0 will move now...'
-				hasPlayerWon = player0.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)		
+			if self.draw:
+				hasPlayerWon = False
+				if player_index == 0:
+					hasPlayerWon = player0.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)
+				else:
+					hasPlayerWon = player1.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)
+				if hasPlayerWon == True:
+					if player_index == 0:
+						self.winplay = 0
+					else:
+						self.winplay = 1
+					break
+				player_index = 1 - player_index
 			else:
-				print 'Player 1 will move now...'
-				hasPlayerWon = player1.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)					
-			if hasPlayerWon == True:
-				print 'The game has ended.' 
-				break
-			player_index = 1 - player_index
+				self.winplay = 2
+
 			
 
