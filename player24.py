@@ -14,6 +14,8 @@ class Player:
 		self.binhand = [0]*len(deck)
 		self.hand_str = str(0)
 		self.levenlist = []
+		self.pickedCard = []
+		self.droppedCard = []
 
 		self.priority1 = []
 		self.priority2 = []
@@ -143,7 +145,6 @@ class Player:
 #						self.pickup4.append(card)
 
 	#This strategy is very conservative and only checks in pickup1, i.e., only for the minimum distance sequences
-		self.pickedCard = []
 		z = discard[-1]
 		if z in self.pickup1:
 			self.hand.append(z)
@@ -231,4 +232,7 @@ class Player:
 		z = random.sample(self.drop1, 1)
 		self.hand.remove(z[0])
 		discard.append(z[0])
-
+		self.droppedCard.append(z[0])
+		for i in self.droppedCard:
+			if i in self.pickedCard:
+				self.pickedCard.remove(i)
