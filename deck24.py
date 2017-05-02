@@ -138,7 +138,7 @@ class Deck:
 
 		#initialise two players with empty hand and knowledge initialised to 0 for all cards
 		player0 = Player(self.deck)
-		player1 = Player(self.deck)
+		player1 = Player1(self.deck)
 
 		#shuffles deck
 		shuffle(self.deck)
@@ -160,45 +160,46 @@ class Deck:
 
 
 
-
+		self.oppPick = []
 
 		#Game play
-#		print 'GAME IS STARTING'
-#		print self.discard
-#		print self.draw
-#		print player0.hand
-#		print player1.hand
+		print 'GAME IS STARTING'
+		print self.discard
+		print self.draw
+		print player0.hand
+		print player1.hand
 		
 		player_index = 0
 		while True:
 			if self.draw:
 				hasPlayerWon = False
 				if player_index == 0:
-#					print '--------------------------------------------------------------------------'
-#					print 'PLAYER 0 MOVES...'
+					print '--------------------------------------------------------------------------'
+					print 'PLAYER 0 MOVES...'
 					hasPlayerWon = player0.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)
-#					print self.discard
-#					print self.draw
-#					print player0.hand
+					self.oppPick = player0.pickedCard
+					print self.discard
+					print self.draw
+					print player0.hand
 				else:
-#					print '--------------------------------------------------------------------------'
-#					print 'PLAYER 1 MOVES...'
-					hasPlayerWon = player1.playTurn(self.deck, self.discard, self.draw, self.seq, self.binstr)
-#					print self.discard
-#					print self.draw
-#					print player1.hand
+					print '--------------------------------------------------------------------------'
+					print 'PLAYER 1 MOVES...'
+					hasPlayerWon = player1.playTurn1(self.deck, self.discard, self.draw, self.seq, self.binstr, self.oppPick)
+					print self.discard
+					print self.draw
+					print player1.hand
 				if hasPlayerWon == True:
 					if player_index == 0:
 						self.winplay = 0
-#						print 'PLAYER 0 WINS...'
+						print 'PLAYER 0 WINS...'
 					else:
 						self.winplay = 1
-#						print 'PLAYER 1 WINS...'
+						print 'PLAYER 1 WINS...'
 					break
 				player_index = 1 - player_index
 			else:
 				self.winplay = 2
-#				print 'INCONCLUSIVE GAME'
+				print 'INCONCLUSIVE GAME'
 				break
 
 
@@ -222,5 +223,4 @@ class Deck:
 
 
 			
-
 
